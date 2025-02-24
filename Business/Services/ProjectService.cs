@@ -1,4 +1,5 @@
 ﻿using Business.Factories;
+using Business.Interfaces;
 using Business.Models.Project;
 using Business.Models.Response;
 using Data.Entities;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ProjectService(IProjectRepository projectRepository)
+public class ProjectService(IProjectRepository projectRepository) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
 
@@ -35,7 +36,8 @@ public class ProjectService(IProjectRepository projectRepository)
 
             return ResponseResult.Created("Project was created successfully");
 
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return ResponseResult.Failed($"Error :: {ex.Message}");
         }
@@ -84,7 +86,7 @@ public class ProjectService(IProjectRepository projectRepository)
 
     public async Task<ResponseResult<ProjectEntity>> UpdateProjectAsync(Project project)
     {
-        
+
         try
         {
             if (project == null)
@@ -112,7 +114,7 @@ public class ProjectService(IProjectRepository projectRepository)
     {
         try
         {
-            if(expression == null)
+            if (expression == null)
             {
                 return ResponseResult.Failed("Invalid expression");
             }
@@ -124,7 +126,7 @@ public class ProjectService(IProjectRepository projectRepository)
             }
 
             var result = await _projectRepository.RemoveAsync(entity);
-            if(result == null)
+            if (!result.HasValue || !result.Value)
             {
                 return ResponseResult.Failed("Could't delete the project");
             }

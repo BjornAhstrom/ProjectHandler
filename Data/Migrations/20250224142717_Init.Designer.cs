@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250224132543_Init")]
+    [Migration("20250224142717_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -141,23 +141,12 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoleEntityId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleUserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleEntityId");
-
-                    b.HasIndex("RoleUserId", "RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -216,13 +205,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Data.Entities.RoleEntity", null)
+                    b.HasOne("Data.Entities.RoleEntity", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleEntityId");
-
-                    b.HasOne("Data.Entities.UserRoleEntity", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleUserId", "RoleId1")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -242,7 +227,7 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Data.Entities.UserEntity", null)
-                        .WithMany("Roles")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserEntityId");
 
                     b.HasOne("Data.Entities.UserEntity", "User")
@@ -277,7 +262,7 @@ namespace Data.Migrations
                 {
                     b.Navigation("Projects");
 
-                    b.Navigation("Roles");
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

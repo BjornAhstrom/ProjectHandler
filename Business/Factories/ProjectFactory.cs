@@ -11,6 +11,11 @@ public static class ProjectFactory
         {
             ProjectName = form.ProjectName,
             Description = form.Description,
+            StartDate = form.StartDate,
+            EndDate = form.EndDate,
+            CustomerId = form.CustomerId,
+            StatusTypeId = form.StatusTypeId,
+            ProjectManagerId = form.ProjectManagerId
         };
 
         return entity;
@@ -26,7 +31,8 @@ public static class ProjectFactory
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             StatusTypeName = entity.StatusType.StatusType,
-            ProjectManager = $"{entity.ProjectManager.FirstName} {entity.ProjectManager.LastName}"
+            ProjectManager = $"{entity.ProjectManager.FirstName} {entity.ProjectManager.LastName}",
+            
         };
 
         return project;

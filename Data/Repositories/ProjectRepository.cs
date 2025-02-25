@@ -16,6 +16,7 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
             {
                 Id = x.Id,
                 ProjectName = x.ProjectName,
+                Description = x.Description,
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
                 StatusType = x.StatusType,

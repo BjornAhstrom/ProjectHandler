@@ -18,12 +18,10 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
                 ProjectName = x.ProjectName,
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
-                StatusType = new StatusTypeEntity
-                {
-                    StatusType = x.StatusType.StatusType
-                },
+                StatusType = x.StatusType,
                 ProjectManager = new UserEntity
                 {
+                    Id = x.ProjectManager.Id,
                     FirstName = x.ProjectManager.FirstName,
                     LastName = x.ProjectManager.LastName,
                 }

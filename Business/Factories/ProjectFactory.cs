@@ -25,6 +25,8 @@ public static class ProjectFactory
             Description = entity.Description,
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
+            StatusTypeName = entity.StatusType.StatusType,
+            ProjectManager = $"{entity.ProjectManager.FirstName} {entity.ProjectManager.LastName}"
         };
 
         return project;

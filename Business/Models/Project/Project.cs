@@ -1,4 +1,6 @@
-﻿namespace Business.Models.Project;
+﻿using Business.Models.StatusType;
+
+namespace Business.Models.Project;
 
 public class Project
 {
@@ -7,4 +9,6 @@ public class Project
     public string Description { get; set; } = null!;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public string StatusTypeName { get; set; } = null!;
+    public string ProjectManager { get; set; } = null!;
 }

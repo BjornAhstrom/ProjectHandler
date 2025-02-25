@@ -47,13 +47,14 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
     {
         try
         {
-            var entities = await _projectRepository.GetAllAsync();
+            var entities = await _projectRepository.GetFilteredProjectsAsync();
             if (entities == null)
             {
                 return (ResponseResult<IEnumerable<Project>>)ResponseResult.Failed("Something went wrong wen fetching projects");
             }
 
-            return ResponseResult<IEnumerable<Project>>.Ok(result: entities.Select(ProjectFactory.Create));
+            var result = entities.Select(ProjectFactory.Create);
+            return ResponseResult<IEnumerable<Project>>.Ok(result: result);
         }
         catch (Exception ex)
         {

@@ -135,12 +135,12 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleEntityId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleEntityId");
 
                     b.ToTable("Users");
                 });
@@ -153,19 +153,9 @@ namespace Data.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoleEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserEntityId")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleEntityId");
-
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UserEntityId");
 
                     b.ToTable("UserRoles");
                 });
@@ -199,33 +189,21 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Data.Entities.RoleEntity", "Role")
+                    b.HasOne("Data.Entities.RoleEntity", null)
                         .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
+                        .HasForeignKey("RoleEntityId");
                 });
 
             modelBuilder.Entity("Data.Entities.UserRoleEntity", b =>
                 {
-                    b.HasOne("Data.Entities.RoleEntity", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("RoleEntityId");
-
                     b.HasOne("Data.Entities.RoleEntity", "Role")
-                        .WithMany()
+                        .WithMany("UsersRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.UserEntity", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserEntityId");
-
                     b.HasOne("Data.Entities.UserEntity", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -242,9 +220,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.RoleEntity", b =>
                 {
-                    b.Navigation("Roles");
-
                     b.Navigation("Users");
+
+                    b.Navigation("UsersRoles");
                 });
 
             modelBuilder.Entity("Data.Entities.StatusTypeEntity", b =>

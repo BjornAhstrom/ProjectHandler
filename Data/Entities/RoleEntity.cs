@@ -10,5 +10,5 @@ public class RoleEntity
 
 
     public ICollection<UserEntity> Users { get; set; } = [];
-    public ICollection<UserRoleEntity> Roles { get; set; } = [];
+    public ICollection<UserRoleEntity> UsersRoles { get; set; } = [];
 }

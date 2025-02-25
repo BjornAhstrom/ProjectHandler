@@ -31,13 +31,13 @@ public class DataContext : DbContext
 
         modelBuilder.Entity<UserRoleEntity>()
             .HasOne(x => x.User)
-            .WithMany()
+            .WithMany(x => x.UserRoles)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<UserRoleEntity>()
-            .HasOne(x=> x.Role)
-            .WithMany()
+            .HasOne(x => x.Role)
+            .WithMany(x => x.UsersRoles)
             .HasForeignKey(x => x.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
     }

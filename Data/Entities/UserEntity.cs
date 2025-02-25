@@ -11,8 +11,8 @@ public class UserEntity
     public string Email { get; set; } = null!;
 
 
-    public int RoleId { get; set; }
-    public RoleEntity Role { get; set; } = null!;
+    //public int RoleId { get; set; }
+    //public RoleEntity Role { get; set; } = null!;
 
     public ICollection<UserRoleEntity> UserRoles { get; set; } = [];
     public ICollection<ProjectEntity> Projects { get; set; } = [];

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250224142717_Init")]
+    [Migration("20250225081005_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -70,9 +70,6 @@ namespace Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("int");
 
@@ -82,7 +79,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ProjectManagerId");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("StatusTypeId");
 
                     b.ToTable("Projects");
                 });
@@ -190,9 +187,9 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.StatusTypeEntity", "Status")
+                    b.HasOne("Data.Entities.StatusTypeEntity", "StatusType")
                         .WithMany("Projects")
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("StatusTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -200,7 +197,7 @@ namespace Data.Migrations
 
                     b.Navigation("ProjectManager");
 
-                    b.Navigation("Status");
+                    b.Navigation("StatusType");
                 });
 
             modelBuilder.Entity("Data.Entities.UserEntity", b =>

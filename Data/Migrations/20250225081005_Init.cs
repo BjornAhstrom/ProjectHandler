@@ -83,7 +83,6 @@ namespace Data.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusTypeId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     ProjectManagerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -97,8 +96,8 @@ namespace Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Projects_StatusTypes_StatusId",
-                        column: x => x.StatusId,
+                        name: "FK_Projects_StatusTypes_StatusTypeId",
+                        column: x => x.StatusTypeId,
                         principalTable: "StatusTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -157,9 +156,9 @@ namespace Data.Migrations
                 column: "ProjectManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_StatusId",
+                name: "IX_Projects_StatusTypeId",
                 table: "Projects",
-                column: "StatusId");
+                column: "StatusTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleEntityId",

@@ -10,7 +10,7 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
     public async Task<IEnumerable<ProjectEntity>> GetFilteredProjectsAsync()
     {
         var entities = await _context.Projects
-            .Include(x => x.Status)
+            .Include(x => x.StatusType)
             .Include(x => x.ProjectManager)
             .Select(x => new  ProjectEntity
             {
@@ -18,9 +18,9 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
                 ProjectName = x.ProjectName,
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
-                Status = new StatusTypeEntity
+                StatusType = new StatusTypeEntity
                 {
-                    StatusType = x.Status.StatusType
+                    StatusType = x.StatusType.StatusType
                 },
                 ProjectManager = new UserEntity
                 {

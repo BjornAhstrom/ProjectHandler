@@ -9,7 +9,7 @@ public class ProjectEntity
     public DateTime EndDate { get; set; }
 
     public int StatusTypeId { get; set; }
-    public StatusTypeEntity Status { get; set; } = null!;
+    public StatusTypeEntity StatusType { get; set; } = null!;
 
     public int CustomerId { get; set; }
     public CustomerEntity Customer { get; set; } = null!;

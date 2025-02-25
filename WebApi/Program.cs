@@ -12,9 +12,13 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("ProjectHandlerSqlServer")));
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IStatusTypeRepository, StatusTypeRepository>();
 
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IStatusTypeService, StatusTypeService>();
 
 var app = builder.Build();
 app.MapOpenApi();

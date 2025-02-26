@@ -4,6 +4,7 @@ using Business.Models.Response;
 using Business.Models.User;
 using Data.Entities;
 using Data.Interfaces;
+using System.Linq.Expressions;
 
 namespace Business.Services;
 
@@ -56,5 +57,17 @@ public class UserService(IUserRepository userRepository) : IUserService
         {
             return ResponseResult<IEnumerable<User>>.NotFound($"Error :: {ex.Message}");
         }
+    }
+
+    public async Task<ResponseResult<User>> GetByIdAsync(int id)
+    {
+        var entity = await _userRepository.GetAsync(x => x.Id == id);
+        if (entity == null)
+        {
+            return ResponseResult<User>.NotFound("");
+        }
+
+        var user = UserFactory.Create(entity);
+        return ResponseResult<User>.Ok(result: user); ;
     }
 }

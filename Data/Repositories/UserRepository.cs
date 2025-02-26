@@ -2,6 +2,7 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Data.Repositories;
 
@@ -32,6 +33,34 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
             }).ToListAsync();
 
         return entities;
+    }
+
+    public override async Task<UserEntity?> GetAsync(Expression<Func<UserEntity, bool>> expression)
+    {
+        var entity = await _context.Users
+            .Include(x => x.Role)
+            .Include(x => x.UserRoles)
+            .ThenInclude(x => x.Role)
+            .Select(x => new UserEntity
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Email = x.Email,
+                RoleId = x.RoleId,
+                Role = x.Role,
+                UserRoles = x.UserRoles.Select(ur => new UserRoleEntity
+                {
+                    Role = new RoleEntity
+                    {
+                        RoleName = ur.Role.RoleName
+                    }
+                }).ToList()
+
+            })
+            .FirstOrDefaultAsync(expression);
+
+        return entity;
     }
 
 

@@ -7,5 +7,6 @@ namespace Business.Interfaces
     {
         Task<ResponseResult> AddAsync(UserRegistrationForm form);
         Task<ResponseResult<IEnumerable<User>>> GetAllAsync();
+        Task<ResponseResult<User>> GetByIdAsync(int id);
     }
 }

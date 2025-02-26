@@ -14,11 +14,13 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configura
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IStatusTypeRepository, StatusTypeRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IStatusTypeService, StatusTypeService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 app.MapOpenApi();

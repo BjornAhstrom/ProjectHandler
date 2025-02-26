@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250225085545_Init")]
+    [Migration("20250226062822_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -138,12 +138,12 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoleEntityId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleEntityId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -192,9 +192,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Data.Entities.RoleEntity", null)
+                    b.HasOne("Data.Entities.RoleEntity", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleEntityId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Data.Entities.UserRoleEntity", b =>

@@ -6,4 +6,8 @@ namespace Data.Repositories;
 
 public class RoleRepository(DataContext context) : BaseRepository<RoleEntity>(context), IRoleRepository
 {
+    public override Task<IEnumerable<RoleEntity>> GetAllAsync()
+    {
+        return base.GetAllAsync();
+    }
 }

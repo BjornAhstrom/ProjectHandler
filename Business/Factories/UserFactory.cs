@@ -26,7 +26,11 @@ public static class UserFactory
             FirstName = entity.FirstName,
             LastName = entity.LastName,
             Email = entity.Email,
-            RoleId = entity.RoleId,
+            Role = new UserRole
+            {
+                RoleId = entity.Role.Id,
+                RoleName = entity.Role.RoleName
+            }
         };
 
         return user;

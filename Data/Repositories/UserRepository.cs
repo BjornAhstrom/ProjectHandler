@@ -20,6 +20,7 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
                 LastName = x.LastName,
                 Email = x.Email,
                 RoleId = x.RoleId,
+                Role = x.Role,
                 UserRoles = x.UserRoles.Select(ur => new UserRoleEntity
                 {
                     Role = new RoleEntity

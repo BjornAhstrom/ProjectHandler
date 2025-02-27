@@ -71,7 +71,7 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
                 return ResponseResult<Project>.NotFound("Invalid expression");
             }
 
-            var entity = await _projectRepository.GetAsync(expression);
+            var entity = await _projectRepository.GetProjectAsync(expression);
             if (entity == null)
             {
                 return ResponseResult<Project>.NotFound("Couldn't found a project");
@@ -85,29 +85,34 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
         }
     }
 
-    public async Task<ResponseResult<ProjectEntity>> UpdateProjectAsync(Project project)
+    public async Task<ResponseResult<Project>> UpdateProjectAsync(ProjectEntity entity)
     {
 
         try
         {
-            if (project == null)
+            if (entity == null)
             {
-                return ResponseResult<ProjectEntity>.NotFound("Invalid model");
+                return ResponseResult<Project>.NotFound("Invalid project data");
             }
 
-            var entity = ProjectFactory.Create(project);
-            var projectEntity = await _projectRepository.UpdateAsync(entity);
-
-            if (projectEntity == null)
+            var existingProject = await _projectRepository.ExistsAsync(x => x.Id == entity.Id);
+            if(!existingProject)
             {
-                return ResponseResult<ProjectEntity>.NotFound("Couldn't update project");
+                return ResponseResult<Project>.NotFound("Project not found");
             }
 
-            return ResponseResult<ProjectEntity>.Ok(result: projectEntity);
+            var updatedProject = await _projectRepository.UpdateAsync(x => x.Id == entity.Id);
+            if (updatedProject == null)
+            {
+                return ResponseResult<Project>.NotFound("Faild to update project");
+            }
+
+            var project = ProjectFactory.Create(updatedProject);
+            return ResponseResult<Project>.Ok(result: project);
         }
         catch (Exception ex)
         {
-            return ResponseResult<ProjectEntity>.NotFound($"Error :: {ex.Message}");
+            return ResponseResult<Project>.NotFound($"Error :: {ex.Message}");
         }
     }
 

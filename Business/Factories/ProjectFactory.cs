@@ -30,9 +30,12 @@ public static class ProjectFactory
             Description = entity.Description,
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
-            StatusTypeName = entity.StatusType.StatusType,
-            ProjectManager = $"{entity.ProjectManager.FirstName} {entity.ProjectManager.LastName}",
-            
+            StatusTypeName = entity.StatusType!.StatusType,
+            ProjectManager = $"{entity.ProjectManager!.FirstName} {entity.ProjectManager.LastName}",
+            StatusTypeId = entity.StatusTypeId,
+            CustomerId = entity.CustomerId,
+            ProjectManagerId = entity.ProjectManagerId
+
         };
 
         return project;
@@ -47,6 +50,9 @@ public static class ProjectFactory
             Description = project.Description,
             StartDate = project.StartDate,
             EndDate = project.EndDate,
+            StatusTypeId = project.StatusTypeId,
+            CustomerId = project.CustomerId,
+            ProjectManagerId = project.ProjectManagerId
         };
 
         return entity;

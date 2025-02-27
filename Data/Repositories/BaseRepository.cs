@@ -69,13 +69,20 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
         }
     }
 
-    public virtual async Task<TEntity?> UpdateAsync(TEntity entity)
+    public virtual async Task<TEntity?> UpdateAsync(Expression<Func<TEntity, bool>> expression)
     {
         try
         {
-            _dbSet.Update(entity);
+            var existingEntity = await _dbSet.FirstOrDefaultAsync(expression);
+            if(existingEntity == null)
+            {
+                return null;
+            }
+
+
+            _dbSet.Update(existingEntity);
             await _context.SaveChangesAsync();
-            return entity;
+            return existingEntity;
         }
         catch (Exception ex)
         {

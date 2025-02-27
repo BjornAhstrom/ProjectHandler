@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces;
 using Business.Models.Project;
+using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -41,6 +42,43 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
             return BadRequest();
         }
 
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        if(id <= 0)
+        {
+            return BadRequest();
+        }
+
+        var result = await _projectService.GetProjectAsync(x => x.Id == id);
+        if (result == null)
+        {
+            return BadRequest();
+        }
+        return Ok(result);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] ProjectEntity entity)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        if(id != entity.Id)
+        {
+            return BadRequest("Mismatched project ID");
+        }
+
+        var result = await _projectService.UpdateProjectAsync(entity); 
+        if (result == null || !result.Success)
+        {
+            return NotFound(result?.Message ?? "Project not found");
+        }
         return Ok(result);
     }
 }

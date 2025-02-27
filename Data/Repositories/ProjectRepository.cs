@@ -20,10 +20,13 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
                 Description = x.Description,
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
+                StatusTypeId = x.StatusTypeId,
+                CustomerId = x.CustomerId,
+                ProjectManagerId = x.ProjectManagerId,
                 StatusType = x.StatusType,
                 ProjectManager = new UserEntity
                 {
-                    Id = x.ProjectManager.Id,
+                    Id = x.ProjectManager!.Id,
                     FirstName = x.ProjectManager.FirstName,
                     LastName = x.ProjectManager.LastName,
                 }
@@ -46,10 +49,13 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
                Description = x.Description,
                StartDate = x.StartDate,
                EndDate = x.EndDate,
+               StatusTypeId = x.StatusTypeId,
+               CustomerId = x.CustomerId,
+               ProjectManagerId = x.ProjectManagerId,
                StatusType = x.StatusType,
                ProjectManager = new UserEntity
                {
-                   Id = x.ProjectManager.Id,
+                   Id = x.ProjectManager!.Id,
                    FirstName = x.ProjectManager.FirstName,
                    LastName = x.ProjectManager.LastName,
                }

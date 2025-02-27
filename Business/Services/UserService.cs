@@ -44,13 +44,13 @@ public class UserService(IUserRepository userRepository) : IUserService
     {
         try
         {
-            var entites = await _userRepository.GetAllAsync();
-            if (entites == null)
+            var entities = await _userRepository.GetAllAsync();
+            if (entities == null)
             {
                 return ResponseResult<IEnumerable<User>>.NotFound("Couldn't found any users");
             }
 
-            return ResponseResult<IEnumerable<User>>.Ok(result: entites.Select(UserFactory.Create));
+            return ResponseResult<IEnumerable<User>>.Ok(result: entities.Select(UserFactory.Create));
 
         }
         catch (Exception ex)
@@ -69,5 +69,23 @@ public class UserService(IUserRepository userRepository) : IUserService
 
         var user = UserFactory.Create(entity);
         return ResponseResult<User>.Ok(result: user); ;
+    }
+
+    public async Task<ResponseResult<IEnumerable<User>>> GetProjectManagersAsync()
+    {
+        try
+        {
+            var entities = await _userRepository.GetProjectManagersAsync();
+            if (entities == null)
+            {
+                return ResponseResult<IEnumerable<User>>.NotFound("Couldn't found any project managers");
+            }
+
+            return ResponseResult<IEnumerable<User>>.Ok(result: entities.Select(UserFactory.Create));
+        }
+        catch (Exception ex)
+        {
+            return ResponseResult<IEnumerable<User>>.NotFound($"Error :: {ex.Message}");
+        }
     }
 }

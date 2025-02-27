@@ -32,4 +32,16 @@ public class UsersController(IUserService userService) : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("project-managers")]
+    public async Task<IActionResult> GetProjectManagersAsync()
+    {
+        var result = await _userService.GetProjectManagersAsync();
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
 }

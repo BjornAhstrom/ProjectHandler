@@ -63,5 +63,17 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
         return entity;
     }
 
+    public async Task<IEnumerable<UserEntity>> GetProjectManagersAsync()
+    {
+        var entities = await _context.Users
+            .Where(x => x.UserRoles.Any(ur => ur.Role.RoleName == "Projektledare"))
+            .Include(x => x.UserRoles)
+            .ThenInclude(x => x.Role)
+            .ToListAsync();
+
+        return entities;
+
+    }
+
 
 }

@@ -61,14 +61,21 @@ public class UserService(IUserRepository userRepository) : IUserService
 
     public async Task<ResponseResult<User>> GetByIdAsync(int id)
     {
-        var entity = await _userRepository.GetAsync(x => x.Id == id);
-        if (entity == null)
+        try
         {
-            return ResponseResult<User>.NotFound("");
-        }
+            var entity = await _userRepository.GetAsync(x => x.Id == id);
+            if (entity == null)
+            {
+                return ResponseResult<User>.NotFound("");
+            }
 
-        var user = UserFactory.Create(entity);
-        return ResponseResult<User>.Ok(result: user); ;
+            var user = UserFactory.Create(entity);
+            return ResponseResult<User>.Ok(result: user); ;
+        }
+        catch (Exception ex)
+        {
+            return ResponseResult<User>.NotFound($"Error :: {ex.Message}");
+        }
     }
 
     public async Task<ResponseResult<IEnumerable<User>>> GetProjectManagersAsync()
@@ -86,6 +93,25 @@ public class UserService(IUserRepository userRepository) : IUserService
         catch (Exception ex)
         {
             return ResponseResult<IEnumerable<User>>.NotFound($"Error :: {ex.Message}");
+        }
+    }
+
+    public async Task<ResponseResult<User>> UpdateUserRoleAsync(int id, int roleId)
+    {
+        try
+        {
+            var entity = await _userRepository.UpdateAsync(x => x.Id == id);
+            if (entity == null)
+            {
+                return ResponseResult<User>.NotFound("Failed to update user");
+            }
+            var user = UserFactory.Create(entity);
+            user.Role.RoleId = roleId;
+            return ResponseResult<User>.Ok(result: user);
+        }
+        catch (Exception ex)
+        {
+            return ResponseResult<User>.NotFound($"Error :: {ex.Message}");
         }
     }
 }

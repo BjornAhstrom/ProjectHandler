@@ -18,6 +18,7 @@ public static class UserFactory
         return entity;
     }
 
+
     public static User Create(UserEntity entity)
     {
         var user = new User
@@ -26,6 +27,7 @@ public static class UserFactory
             FirstName = entity.FirstName,
             LastName = entity.LastName,
             Email = entity.Email,
+
             Role = new UserRole
             {
                 RoleId = entity.Role.Id,

@@ -9,5 +9,6 @@ namespace Business.Interfaces
         Task<ResponseResult<IEnumerable<User>>> GetAllAsync();
         Task<ResponseResult<User>> GetByIdAsync(int id);
         Task<ResponseResult<IEnumerable<User>>> GetProjectManagersAsync();
+        Task<ResponseResult<User>> UpdateUserRoleAsync(int id, int roleId);
     }
 }

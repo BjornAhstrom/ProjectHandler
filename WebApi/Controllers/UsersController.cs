@@ -44,4 +44,20 @@ public class UsersController(IUserService userService) : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPut("{id}/role/{roleId}")]
+    public async Task<IActionResult> updateByIdAsync(int id, int roleId)
+    {
+        if(id <= 0)
+        {
+            return NotFound();
+        }
+        var result = await _userService.UpdateUserRoleAsync(id, roleId);
+        if(result == null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(result);
+    }
 }

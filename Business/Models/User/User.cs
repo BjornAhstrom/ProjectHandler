@@ -8,9 +8,3 @@ public class User
     public string Email { get; set; } = null!;
     public UserRole Role { get; set; } = null!;
 }
-
-public class UserRole
-{
-    public int RoleId { get; set; }
-    public string RoleName { get; set; } = null!;
-}

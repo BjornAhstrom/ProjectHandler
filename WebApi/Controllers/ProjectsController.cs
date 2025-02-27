@@ -81,4 +81,21 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
         }
         return Ok(result);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        var result = await _projectService.DeleteProjectAsync(x => x.Id == id);
+        if (result == null || !result.Success) 
+        {
+            return NotFound(result?.Message ?? ""); 
+        }
+
+        return Ok(result);
+    }
 }

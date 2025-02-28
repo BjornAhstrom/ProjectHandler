@@ -37,4 +37,18 @@ public static class UserFactory
 
         return user;
     }
+
+    public static UserEntity Update(UserUpdateForm form)
+    {
+        var entity = new UserEntity
+        {
+            Id = form.Id,
+            FirstName = form.FirstName,
+            LastName = form.LastName,
+            Email = form.Email,
+            RoleId = form.RoleId
+        };
+
+        return entity;
+    }
 }

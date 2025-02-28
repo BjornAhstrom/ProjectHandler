@@ -11,6 +11,6 @@ namespace Business.Interfaces
         Task<ResponseResult> DeleteProjectAsync(Expression<Func<ProjectEntity, bool>> expression);
         Task<ResponseResult<IEnumerable<Project>>> GetAllProjectsAsync();
         Task<ResponseResult<Project>> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression);
-        Task<ResponseResult<Project>> UpdateProjectAsync(ProjectEntity entity);
+        Task<ResponseResult<Project>> UpdateProjectAsync(ProjectUpdateForm form);
     }
 }

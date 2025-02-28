@@ -21,6 +21,23 @@ public static class ProjectFactory
         return entity;
     }
 
+    public static ProjectEntity Update(ProjectUpdateForm form)
+    {
+        var project = new ProjectEntity
+        {
+            Id = form.Id,
+            ProjectName = form.ProjectName,
+            Description = form.Description,
+            StartDate = form.StartDate,
+            EndDate = form.EndDate,
+            StatusTypeId = form.StatusTypeId,
+            CustomerId = form.CustomerId,
+            ProjectManagerId = form.ProjectManagerId
+
+        };
+
+        return project;
+    }
     public static Project Create(ProjectEntity entity)
     {
         var project = new Project

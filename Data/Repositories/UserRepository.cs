@@ -75,25 +75,4 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
 
     }
 
-    public async Task<UserEntity?> UpdateRoleAsync(Expression<Func<UserEntity, bool>> expression, int roleId)
-    {
-        var entity = await _context.Users
-            .Include(x => x.Role)
-            .FirstOrDefaultAsync(expression);
-
-        if (entity == null)
-        {
-            return null;
-        }
-
-        if (entity.Role == null)
-        {
-            entity.Role = new RoleEntity { Id = 0, RoleName = "Default" };
-        }
-
-        entity.RoleId = roleId;
-
-        return entity;
-    }
-
 }

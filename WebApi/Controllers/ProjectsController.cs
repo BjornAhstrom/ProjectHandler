@@ -61,20 +61,16 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] ProjectEntity entity)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(ProjectUpdateForm form)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        if(id != entity.Id)
-        {
-            return BadRequest("Mismatched project ID");
-        }
 
-        var result = await _projectService.UpdateProjectAsync(entity); 
+        var result = await _projectService.UpdateProjectAsync(form);
         if (result == null || !result.Success)
         {
             return NotFound(result?.Message ?? "Project not found");

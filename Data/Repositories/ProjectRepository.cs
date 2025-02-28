@@ -2,6 +2,7 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Data.Repositories;
@@ -64,5 +65,29 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
            }).FirstOrDefaultAsync(expression);
 
         return entities;
+    }
+
+    public async Task<ProjectEntity?> UpdateByIdAsync(Expression<Func<ProjectEntity, bool>> expression, int statusTypeId)
+    {
+       try
+        {
+            var entity = await _context.Projects
+           .Include(x => x.StatusType)
+           .FirstOrDefaultAsync(expression);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            entity.StatusTypeId = statusTypeId;
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return null;
+        }
     }
 }

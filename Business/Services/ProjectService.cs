@@ -85,29 +85,32 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
         }
     }
 
-    public async Task<ResponseResult<Project>> UpdateProjectAsync(ProjectEntity entity)
+    public async Task<ResponseResult<Project>> UpdateProjectAsync(ProjectUpdateForm form)
     {
 
         try
         {
-            if (entity == null)
-            {
-                return ResponseResult<Project>.NotFound("Invalid project data");
-            }
-
-            var existingProject = await _projectRepository.ExistsAsync(x => x.Id == entity.Id);
+            var existingProject = await _projectRepository.ExistsAsync(x => x.Id == form.Id);
             if(!existingProject)
             {
                 return ResponseResult<Project>.NotFound("Project not found");
             }
 
-            var updatedProject = await _projectRepository.UpdateAsync(x => x.Id == entity.Id);
-            if (updatedProject == null)
+            var entity = ProjectFactory.Update(form);
+
+            var updated = await _projectRepository.UpdateAsync(entity);
+            if (!updated)
             {
                 return ResponseResult<Project>.NotFound("Faild to update project");
             }
 
-            var project = ProjectFactory.Create(updatedProject);
+            var projectEntity = await _projectRepository.GetProjectAsync(x => x.Id == entity.Id);
+            if (projectEntity == null)
+            {
+                return ResponseResult<Project>.NotFound("Faild to fetch project");
+            }
+
+            var project = ProjectFactory.Create(projectEntity);
             return ResponseResult<Project>.Ok(result: project);
         }
         catch (Exception ex)
@@ -145,4 +148,5 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
             return ResponseResult.Failed($"Error :: {ex.Message}");
         }
     }
+
 }

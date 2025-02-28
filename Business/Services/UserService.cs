@@ -1,5 +1,6 @@
 ﻿using Business.Factories;
 using Business.Interfaces;
+using Business.Models.Project;
 using Business.Models.Response;
 using Business.Models.User;
 using Data.Entities;
@@ -96,22 +97,39 @@ public class UserService(IUserRepository userRepository) : IUserService
         }
     }
 
-    public async Task<ResponseResult<User>> UpdateUserRoleAsync(int id, int roleId)
+    public async Task<ResponseResult<User>> UpdateUserRoleAsync(UserUpdateForm form)
     {
         try
         {
-            var entity = await _userRepository.UpdateAsync(x => x.Id == id);
-            if (entity == null)
+            var existingUser = await _userRepository.ExistsAsync(x => x.Id == form.Id);
+            if (!existingUser)
             {
-                return ResponseResult<User>.NotFound("Failed to update user");
+                return ResponseResult<User>.NotFound("User not found");
             }
-            var user = UserFactory.Create(entity);
-            user.Role.RoleId = roleId;
+
+            var entity = UserFactory.Update(form);
+
+            var updated = await _userRepository.UpdateAsync(entity);
+            if (!updated)
+            {
+                return ResponseResult<User>.NotFound("Faild to update user");
+            }
+
+            var userEntity = await _userRepository.GetAsync(x => x.Id == entity.Id);
+            if (userEntity == null)
+            {
+                return ResponseResult<User>.NotFound("Faild to fetch user");
+            }
+
+            var user = UserFactory.Create(userEntity);
+
             return ResponseResult<User>.Ok(result: user);
         }
         catch (Exception ex)
         {
             return ResponseResult<User>.NotFound($"Error :: {ex.Message}");
         }
+
+        //return null!;
     }
 }

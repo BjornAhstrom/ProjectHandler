@@ -97,7 +97,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         }
     }
 
-    public async Task<ResponseResult<User>> UpdateUserRoleAsync(UserUpdateForm form)
+    public async Task<ResponseResult<User>> UpdateUserAsync(UserUpdateForm form)
     {
         try
         {

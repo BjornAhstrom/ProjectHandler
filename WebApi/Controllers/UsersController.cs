@@ -1,4 +1,5 @@
 ﻿using Business.Interfaces;
+using Business.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -45,14 +46,15 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("{id}/role/{roleId}")]
-    public async Task<IActionResult> updateByIdAsync(int id, int roleId)
+    [HttpPut]
+    public async Task<IActionResult> updateByIdAsync(UserUpdateForm form)
     {
-        if(id <= 0)
+        if (!ModelState.IsValid)
         {
-            return NotFound();
+            return BadRequest(ModelState);
         }
-        var result = await _userService.UpdateUserRoleAsync(id, roleId);
+
+        var result = await _userService.UpdateUserAsync(form);
         if(result == null)
         {
             return BadRequest();

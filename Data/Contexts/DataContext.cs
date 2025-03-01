@@ -50,5 +50,52 @@ public class DataContext : DbContext
             .WithMany(x => x.UsersRoles)
             .HasForeignKey(x => x.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        modelBuilder.Entity<UserProfileEntity>()
+            .HasOne(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId) 
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+        modelBuilder.Entity<UserAddressEntity>()
+            .HasOne(x => x.City)
+            .WithMany()
+            .HasForeignKey(x => x.CityId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+
+        modelBuilder.Entity<UserAddressEntity>()
+            .HasOne(x => x.PostalCode)
+            .WithMany()
+            .HasForeignKey(x => x.PostalCodeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserAddressEntity>()
+            .HasOne(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.userId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        modelBuilder.Entity<CustomerAddressEntity>()
+            .HasOne(x => x.City)
+            .WithMany()
+            .HasForeignKey(x => x.CityId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<CustomerAddressEntity>()
+            .HasOne(x => x.PostalCode)
+            .WithMany()
+            .HasForeignKey(x => x.PostalCodeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<CustomerAddressEntity>()
+            .HasOne(x => x.Customer)
+            .WithMany()
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

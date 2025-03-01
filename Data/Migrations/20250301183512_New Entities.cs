@@ -84,35 +84,6 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAddresses",
-                columns: table => new
-                {
-                    useId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    AddressTypeId = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAddresses", x => x.useId);
-                    table.ForeignKey(
-                        name: "FK_UserAddresses_AddressTypes_AddressTypeId",
-                        column: x => x.AddressTypeId,
-                        principalTable: "AddressTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserAddresses_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -145,17 +116,14 @@ namespace Data.Migrations
                 name: "CustomerAddresses",
                 columns: table => new
                 {
-                    customerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CityId = table.Column<int>(type: "int", nullable: false),
                     PostalCodeId = table.Column<int>(type: "int", nullable: false),
                     AddressTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAddresses", x => x.customerId);
+                    table.PrimaryKey("PK_CustomerAddresses", x => x.CustomerId);
                     table.ForeignKey(
                         name: "FK_CustomerAddresses_AddressTypes_AddressTypeId",
                         column: x => x.AddressTypeId,
@@ -167,7 +135,7 @@ namespace Data.Migrations
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CustomerAddresses_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -178,6 +146,44 @@ namespace Data.Migrations
                         name: "FK_CustomerAddresses_PostalCodes_PostalCodeId",
                         column: x => x.PostalCodeId,
                         principalTable: "PostalCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAddresses",
+                columns: table => new
+                {
+                    userId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    PostalCodeId = table.Column<int>(type: "int", nullable: false),
+                    AddressTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAddresses", x => x.userId);
+                    table.ForeignKey(
+                        name: "FK_UserAddresses_AddressTypes_AddressTypeId",
+                        column: x => x.AddressTypeId,
+                        principalTable: "AddressTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserAddresses_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserAddresses_PostalCodes_PostalCodeId",
+                        column: x => x.PostalCodeId,
+                        principalTable: "PostalCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserAddresses_Users_userId",
+                        column: x => x.userId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -202,14 +208,14 @@ namespace Data.Migrations
                         name: "FK_UserProfiles_UserAddresses_UserAddressId",
                         column: x => x.UserAddressId,
                         principalTable: "UserAddresses",
-                        principalColumn: "useId",
+                        principalColumn: "userId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserProfiles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -221,11 +227,6 @@ namespace Data.Migrations
                 name: "IX_CustomerAddresses_CityId",
                 table: "CustomerAddresses",
                 column: "CityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerAddresses_CustomerId",
-                table: "CustomerAddresses",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerAddresses_PostalCodeId",
@@ -253,9 +254,14 @@ namespace Data.Migrations
                 column: "AddressTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAddresses_UserId",
+                name: "IX_UserAddresses_CityId",
                 table: "UserAddresses",
-                column: "UserId");
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAddresses_PostalCodeId",
+                table: "UserAddresses",
+                column: "PostalCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProfiles_UserAddressId",
@@ -284,12 +290,6 @@ namespace Data.Migrations
                 name: "UserProfiles");
 
             migrationBuilder.DropTable(
-                name: "Cities");
-
-            migrationBuilder.DropTable(
-                name: "PostalCodes");
-
-            migrationBuilder.DropTable(
                 name: "OrderStatuses");
 
             migrationBuilder.DropTable(
@@ -297,6 +297,12 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AddressTypes");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "PostalCodes");
         }
     }
 }

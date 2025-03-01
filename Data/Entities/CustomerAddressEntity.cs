@@ -5,11 +5,8 @@ namespace Data.Entities;
 public class CustomerAddressEntity
 {
     [Key]
-    public int customerId { get; set; }
+    public int CustomerId { get; set; }
     public CustomerEntity Customer { get; set; } = null!;
-
-    public string Address { get; set; } = null!;
-
 
     public int CityId { get; set; }
     public CityEntity City { get; set; } = null!;

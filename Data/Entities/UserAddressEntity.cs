@@ -5,13 +5,13 @@ namespace Data.Entities;
 public class UserAddressEntity
 {
     [Key]
-    public int useId {  get; set; }
+    public int userId { get; set; }
     public UserEntity User { get; set; } = null!;
 
+    public int CityId { get; set; }
+    public CityEntity City { get; set; } = null!;
+    public int PostalCodeId { get; set; }
+    public PostalCodeEntity PostalCode { get; set; } = null!;
     public int AddressTypeId { get; set; }
     public AddressTypeEntity AddressType { get; set; } = null!;
-
-    public string Address { get; set; } = null!;
-    public string City { get; set; } = null!;
-    public string PostalCode { get; set; } = null!;
 }

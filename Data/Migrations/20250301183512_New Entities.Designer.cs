@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250301175239_New Entities")]
+    [Migration("20250301183512_New Entities")]
     partial class NewEntities
     {
         /// <inheritdoc />
@@ -61,15 +61,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.CustomerAddressEntity", b =>
                 {
-                    b.Property<int>("customerId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("customerId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AddressTypeId")
                         .HasColumnType("int");
@@ -77,19 +70,14 @@ namespace Data.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PostalCodeId")
                         .HasColumnType("int");
 
-                    b.HasKey("customerId");
+                    b.HasKey("CustomerId");
 
                     b.HasIndex("AddressTypeId");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("PostalCodeId");
 
@@ -279,35 +267,25 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.UserAddressEntity", b =>
                 {
-                    b.Property<int>("useId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("userId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("useId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AddressTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.HasKey("useId");
+                    b.Property<int>("PostalCodeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("userId");
 
                     b.HasIndex("AddressTypeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("PostalCodeId");
 
                     b.ToTable("UserAddresses");
                 });
@@ -403,7 +381,7 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.CityEntity", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Data.Entities.CustomerEntity", "Customer")
@@ -415,7 +393,7 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.PostalCodeEntity", "PostalCode")
                         .WithMany()
                         .HasForeignKey("PostalCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AddressType");
@@ -492,13 +470,29 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Data.Entities.CityEntity", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.PostalCodeEntity", "PostalCode")
+                        .WithMany()
+                        .HasForeignKey("PostalCodeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Data.Entities.UserEntity", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AddressType");
+
+                    b.Navigation("City");
+
+                    b.Navigation("PostalCode");
 
                     b.Navigation("User");
                 });
@@ -525,7 +519,7 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");

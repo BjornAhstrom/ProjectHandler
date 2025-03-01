@@ -16,12 +16,13 @@ public class UserRepository_Tests
             .Options;
 
         var context = new DataContext(options);
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
         return context;
     }
 
     [Fact]
-    public async Task AddAsync_ShouldAddAndReturnProject()
+    public async Task AddAsync_ShouldAddAndReturnUser()
     {
         // Arrange
         var context = GetDataContext();
@@ -47,6 +48,7 @@ public class UserRepository_Tests
 
         // Assert
         Assert.NotEqual(0, result!.Id);
+        Assert.Contains(userEntity, context.Users);
 
         context.Dispose();
     }
@@ -162,7 +164,7 @@ public class UserRepository_Tests
 
         // Assert
         Assert.True(result);
-
+        
         var deletedUser = await context.Users.FindAsync(user.Id);
         Assert.Null(deletedUser);
 

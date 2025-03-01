@@ -2,6 +2,7 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Data.Repositories;
@@ -84,14 +85,13 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
             .ToList();
 
             _context.UserRoles.RemoveRange(userRoles);
-
             _context.Users.Remove(entity);
-
             await _context.SaveChangesAsync();
 
             return true;
-        } catch
+        } catch (Exception ex) 
         {
+            Debug.WriteLine($"Error :: {ex.Message}");
             return false;
         }
     }

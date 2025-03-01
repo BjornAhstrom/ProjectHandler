@@ -36,5 +36,6 @@ public class StatusTypeRepository_Tests
         Assert.Equal(TestData.StatusesEntities.Length, result.Count());
 
         context.Dispose();
+        context = null!;
     }
 }

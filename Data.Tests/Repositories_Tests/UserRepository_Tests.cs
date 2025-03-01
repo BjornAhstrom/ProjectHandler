@@ -40,17 +40,25 @@ public class UserRepository_Tests
             LastName = "User",
             Email = "test.user@example.com",
             RoleId = 1,
-            Role = context.Roles.First(r => r.Id == 1) // Sätter roll
+            Role = context.Roles.First(r => r.Id == 1)
         };
+        var existingProject = await context.Users.FirstOrDefaultAsync(x => x.Id == userEntity.Id);
+        if (existingProject != null)
+        {
+            await repository.RemoveAsync(existingProject);
+            await context.SaveChangesAsync();
+        }
 
         // Act
         var result = await repository.AddAsync(userEntity);
+
 
         // Assert
         Assert.NotEqual(0, result!.Id);
         Assert.Contains(userEntity, context.Users);
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -72,6 +80,7 @@ public class UserRepository_Tests
         Assert.Equal(TestData.UsersEntities.Length, result.Count());
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -94,6 +103,7 @@ public class UserRepository_Tests
         Assert.Equal(TestData.UsersEntities[0].Id, result!.Id);
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -117,6 +127,7 @@ public class UserRepository_Tests
         Assert.Equal(expected, result.Count());
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -144,6 +155,7 @@ public class UserRepository_Tests
         Assert.True(result);
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -164,11 +176,12 @@ public class UserRepository_Tests
 
         // Assert
         Assert.True(result);
-        
+
         var deletedUser = await context.Users.FindAsync(user.Id);
         Assert.Null(deletedUser);
 
         context.Dispose();
+        context = null!;
     }
 
 }

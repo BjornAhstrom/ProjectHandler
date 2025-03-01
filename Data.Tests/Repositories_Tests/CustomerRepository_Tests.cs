@@ -36,5 +36,6 @@ public class CustomerRepository_Tests
         Assert.Equal(TestData.CustomersEntities.Length, result.Count());
 
         context.Dispose();
+        context = null!;
     }
 }

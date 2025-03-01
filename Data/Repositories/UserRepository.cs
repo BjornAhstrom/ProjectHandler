@@ -75,7 +75,7 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
         return entities;
 
     }
-
+  
     public override async Task<bool?> RemoveAsync(UserEntity entity)
     {
         try
@@ -89,7 +89,8 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
             await _context.SaveChangesAsync();
 
             return true;
-        } catch (Exception ex) 
+        }
+        catch (Exception ex)
         {
             Debug.WriteLine($"Error :: {ex.Message}");
             return false;

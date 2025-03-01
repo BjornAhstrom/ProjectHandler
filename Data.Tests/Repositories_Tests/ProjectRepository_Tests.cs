@@ -50,6 +50,7 @@ public class ProjectRepository_Tests
         Assert.Contains(projectEntity, context.Projects);
 
         context.Dispose();
+        context = null!;
     }
 
 
@@ -75,6 +76,7 @@ public class ProjectRepository_Tests
         Assert.Equal(TestData.ProjectEntities.Length, result.Count());
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -100,6 +102,7 @@ public class ProjectRepository_Tests
         Assert.Equal(TestData.ProjectEntities[0].Id, result!.Id);
 
         context.Dispose();
+        context = null!;
     }
 
 
@@ -131,6 +134,7 @@ public class ProjectRepository_Tests
         Assert.True(result);
 
         context.Dispose();
+        context = null!;
     }
 
     [Fact]
@@ -154,6 +158,7 @@ public class ProjectRepository_Tests
         Assert.Null(deletedProject);
 
         context.Dispose();
+        context = null!;
     }
 
 }

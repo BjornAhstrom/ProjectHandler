@@ -24,7 +24,7 @@ public class DataContext : DbContext
     public DbSet<AddressTypeEntity> AddressTypes { get; set; }
     public DbSet<UserAddressEntity> UserAddresses { get; set; }
     public DbSet<CustomerAddressEntity> CustomerAddresses { get; set; }
-    public DbSet<CityEntity> Citys { get; set; }
+    public DbSet<CityEntity> Cities { get; set; }
     public DbSet<PostalCodeEntity> PostalCodes { get; set; }
     public DbSet<OrderEntity> Orders { get; set; }
     public DbSet<CustomerContactEntity> CustomerContacts { get; set; }

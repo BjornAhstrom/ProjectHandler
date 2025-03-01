@@ -47,7 +47,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> updateByIdAsync(UserUpdateForm form)
+    public async Task<IActionResult> updateAsync(UserUpdateForm form)
     {
         if (!ModelState.IsValid)
         {
@@ -60,6 +60,21 @@ public class UsersController(IUserService userService) : ControllerBase
             return BadRequest();
         }
 
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUserAsync(int id)
+    {
+        if(id <= 0)
+        {
+            return NotFound();
+        }
+        var result = await _userService.DeleteUserAsync(x  => x.Id == id);
+        if (result == null)
+        {
+            return NotFound();
+        }
         return Ok(result);
     }
 }

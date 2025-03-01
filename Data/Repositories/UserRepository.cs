@@ -66,13 +66,34 @@ public class UserRepository(DataContext context) : BaseRepository<UserEntity>(co
     public async Task<IEnumerable<UserEntity>> GetProjectManagersAsync()
     {
         var entities = await _context.Users
-            .Where(x => x.UserRoles.Any(ur => ur.Role.RoleName == "Projektledare"))
             .Include(x => x.UserRoles)
             .ThenInclude(x => x.Role)
+            .Where(x => x.UserRoles.Any(ur => ur.Role.RoleName == "Projektledare"))
             .ToListAsync();
 
         return entities;
 
+    }
+
+    public override async Task<bool?> RemoveAsync(UserEntity entity)
+    {
+        try
+        {
+            var userRoles = _context.UserRoles
+            .Where(x => x.UserId == entity.Id)
+            .ToList();
+
+            _context.UserRoles.RemoveRange(userRoles);
+
+            _context.Users.Remove(entity);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        } catch
+        {
+            return false;
+        }
     }
 
 }

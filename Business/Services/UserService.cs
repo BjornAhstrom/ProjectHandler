@@ -129,7 +129,33 @@ public class UserService(IUserRepository userRepository) : IUserService
         {
             return ResponseResult<User>.NotFound($"Error :: {ex.Message}");
         }
+    }
 
-        //return null!;
+    public async Task<ResponseResult> DeleteUserAsync(Expression<Func<UserEntity, bool>> expression)
+    {
+        try
+        {
+            if (expression == null)
+            {
+                return ResponseResult.Failed("Something went wrong");
+            }
+            var entity = await _userRepository.GetAsync(expression);
+            if (entity == null)
+            {
+                return ResponseResult.Failed("The user doesn't exists");
+            }
+
+            var result = await _userRepository.RemoveAsync(entity);
+            if (!result.HasValue || !result.Value)
+            {
+                return ResponseResult.Failed("Could't delete the user");
+            }
+
+            return ResponseResult.ActionSucceeded("User has been deleted successfully");
+
+        } catch (Exception ex)
+        {
+            return ResponseResult.Failed($"Error :: {ex.Message}");
+        }
     }
 }
